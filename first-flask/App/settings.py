@@ -13,8 +13,8 @@ def get_database_url(dbinfo):
 class Config(object):
     DEBUG = False
     TESTING = False
-    SECRET_KEY = "110"
-    SESSION_TYPE = "sqlalchmey"
+    SECRET_KEY = "iamholly"
+    SESSION_TYPE = "filesystem"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
