@@ -1,30 +1,27 @@
-from datetime import datetime
+from flask import make_response, render_template, redirect, url_for, session
 
-from flask import request, jsonify, make_response, render_template, redirect, url_for, session, flash
-
+from App.ext import db
 from App.main import main
 from App.main.Form import NameForm
+from App.model import User
 
 
 @main.route('/', methods=["GET", "POST"])
-def hello_world():
-    current_time = datetime.utcnow()
-    name = None
+def index():
     form = NameForm()
     if form.validate_on_submit():
-        old_name = session.get('name')
-        if old_name is not None and old_name != form.name.data:
-            flash('Looks like you have changed your name')
+        user = User.query.filter_by(username=form.name.data).first()
+        if user is None:
+            user = User(username=form.name.data)
+            db.session.add(user)
+            db.session.commit()
+            session['known'] = False
+        else:
+            session['known'] = True
         session['name'] = form.name.data
-        return redirect(url_for('main.hello_world'))
-    return render_template('index.html', form=form, name=session.get('name'))
-
-
-@main.route('/index')
-def index():
-    headers = request.headers
-    headers = dict(headers)
-    return jsonify({"data": headers})
+        form.name.data = ''
+        return redirect(url_for('main.index'))
+    return render_template('index.html', form=form, name=session.get('name'), known=session.get('known', False))
 
 
 @main.route('/user')
@@ -39,3 +36,8 @@ def cookies():
     response.set_cookie('answer', "666")
 
     return response
+
+
+@main.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
