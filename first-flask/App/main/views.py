@@ -1,4 +1,5 @@
 from flask import make_response, render_template, redirect, url_for, session
+from flask_login import login_required
 
 from App.ext import db
 from App.main import main
@@ -41,3 +42,9 @@ def cookies():
 @main.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
+
+
+@main.route('/secret')
+@login_required
+def secret():
+    return "Only authenticated user are allowed!"

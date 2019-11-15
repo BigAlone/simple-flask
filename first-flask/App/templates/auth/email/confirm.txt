@@ -1,0 +1,7 @@
+Dear {{ user.username }}:
+    I'm so glad to hear from you. How have you been these days?
+    In your last letter, you talked about movies you love. I agreed with you that Life of Pi is a great movie.
+    Anyway, here is one of favorite movies that I would like to recommend to you.......
+    The link:{{ url_for('auth.confirm',token=token,_external=True) }}
+
+    Yours,Li Lei

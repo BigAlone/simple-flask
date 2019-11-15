@@ -43,7 +43,7 @@ class TestingConfig(Config):
         "PASSWORD": "zuber",
         "HOST": "localhost",
         "PORT": "3306",
-        "NAME": "zuber_log",
+        "NAME": "zuber_test",
         "DB": "mysql",
         "DRIVER": "pymysql"
     }
